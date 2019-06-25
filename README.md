@@ -1,1 +1,2 @@
-# python_training
+# Python_Training
+1-KNN classifier
