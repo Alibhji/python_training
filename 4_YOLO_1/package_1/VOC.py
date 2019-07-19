@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from PIL import Image
 from matplotlib import pyplot as plt
 import numpy as np
+from torchvision import transforms
 
 IMAGE_FOLDER="JPEGImages"
 LABEL_FOLDER="Annotations"
@@ -25,9 +26,16 @@ def detection_collate(batch):
     imgs=[]
     sizes=[]
 
+    # pytorch provides a function to convert PIL images to tensors.
+    pil2tensor = transforms.ToTensor()
+    tensor2pil = transforms.ToPILImage()
+
     for sample in  (batch):
-        img = torch.from_numpy(sample[0]).float()
+        # img = torch.from_numpy(sample[0]).float()
+        # imgs.append(img)
+        img=pil2tensor(sample[0])
         imgs.append(img)
+
 
         # for drawing box
         # if using batch it should keep original image size.
@@ -305,8 +313,8 @@ class VOC(torch.utils.data.Dataset):
         current_shape=img.size
         img= img.resize((self.resize_factor,self.resize_factor))
         # print(img.size)
-        img = np.array(img, dtype=float)
-        img=np.transpose(img, (2, 0, 1))
+        # img = np.array(img, dtype=float)
+        # img=np.transpose(img, (2, 0, 1))
         target=self.data[index][key]
         # print(target)
 
